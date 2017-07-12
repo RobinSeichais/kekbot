@@ -7,7 +7,7 @@ from logging.handlers import TimedRotatingFileHandler
 from slackclient import SlackClient
 
 
-SLACK_API_TOKEN = "xoxb-46813601744-Nn1POLYDxp1yZ79RGeTZtJGO"
+SLACK_API_TOKEN = "xoxb-46813601744-Ni56j4kghuLAvFwqO8e7vj0X"
 POLL_DELAY = 1
 
 
@@ -23,13 +23,16 @@ def run():
 
     client = SlackClient(SLACK_API_TOKEN)
 
-    if not client.rtm_connect():
+    r = client.rtm_connect()
+    print(r)
+    if not r:
         print("failed to connect to Slack RTM API")
+        quit()
 
     while True:
         for message in client.rtm_read():
             handle_message(message)
-        time.sleep(POLL_DELAY)
+            time.sleep(POLL_DELAY)
 
 
 def handle_message(msg):
